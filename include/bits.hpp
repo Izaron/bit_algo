@@ -11,6 +11,8 @@
 #ifndef BIT_ALGORITHM_HPP
 #define BIT_ALGORITHM_HPP
 
+#include <iostream>
+
 #include <boost/detail/workaround.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -71,7 +73,6 @@ const byte_type count_table<b>::table[] =
 /// \param value    The value to get its bit count
 ///
 /// \note This function works regardless of the value sign.
-///     Complexity: O(N).
 template <typename T>
 BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if<
     boost::is_integral<T>, int
@@ -190,6 +191,85 @@ BIT_ALGORITHM_FUNC_SPEC int bit_count(long long value)
 }
 
 #endif // BIT_ALGORITHM_GCC
+
+
+/// \fn parity ( IntType value )
+/// \return true if the number of bits set to 1 in value is even,
+///         false otherwise.
+///
+/// \param value    The value to get its parity
+///
+/// \note This function works regardless of the value sign.
+template <typename T>
+BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if<
+    boost::is_integral<T>, bool
+>::type parity(T value)
+{
+    return bit_count<T>(value) & 1;
+}
+
+/// \fn first_set ( IntType value )
+/// \return Returns one plus the index of the least significant 1-bit of value.
+///         If x is zero, returns zero. If x is negative, return the maximum
+///         bit index, as the sign bit is the least one.
+///
+/// \param value    The value to get its least significant bit set
+template <typename T>
+BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if_c<
+    boost::is_integral<T>::value, int
+>::type first_set(T value)
+{
+    if (value == 0)
+        return 0;
+    int pos = 1;
+    while (!(value & 1))
+    {
+        pos++;
+        value >>= 1;
+    }
+    return pos;
+}
+
+#if defined(BIT_ALGORITHM_MSVC)
+#elif defined(BIT_ALGORITHM_GCC)
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(int value)
+{
+    return __builtin_ffs(value);
+}
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(long value)
+{
+    return __builtin_ffsl(value);
+}
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(long long value)
+{
+    return __builtin_ffsll(value);
+}
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned int value)
+{
+    return first_set(static_cast<int>(value));
+}
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long value)
+{
+    return first_set(static_cast<long>(value));
+}
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long long value)
+{
+    return first_set(static_cast<long long>(value));
+}
+
+#endif
 
 }
 

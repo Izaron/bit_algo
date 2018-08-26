@@ -35,6 +35,32 @@ int bit_count(T value)
     return res;
 }
 
+template <typename T>
+bool parity(T value)
+{
+    int res = 0;
+    while (value)
+    {
+        res ^= value & 1;
+        value >>= 1;
+    }
+    return res;
+}
+
+template <typename T>
+int first_set(T value)
+{
+    if (value == 0)
+        return 0;
+    int pos = 1;
+    while (!(value & 1))
+    {
+        pos++;
+        value >>= 1;
+    }
+    return pos;
+}
+
 }
 
 // Generates test values of the type T,
@@ -100,8 +126,8 @@ void run_diff(int (*naive)(T), int (*fast)(T),
     std::cout << "Fast solution runned  \t" << t2_seconds 
         << " seconds" << std::endl;
 
-    std::cout << "\t\t\t" << (t1_seconds / t2_seconds * 100.0)
-        << "\% faster" << std::endl;
+    std::cout << "\t\t\t" << (t2_seconds / t1_seconds * 100.0)
+        << "\% from previous" << std::endl;
 }
 
 // Asserts equality of both naive (which is correct by default)
@@ -143,8 +169,12 @@ void benchmark()
 {
     std::vector<T> vector = gen_values<T>();
 
-    work_with_functions("bit_count", naive_impl::bit_count<T>,
-        bit_algo::bit_count<T>, vector);
+    //work_with_functions("bit_count", naive_impl::bit_count<T>,
+    //    bit_algo::bit_count<T>, vector);
+    //work_with_functions("parity", naive_impl::parity<T>,
+    //    bit_algo::parity<T>, vector);
+    work_with_functions("first_set", naive_impl::first_set<T>,
+        bit_algo::first_set<T>, vector);
 }
 
 int main()

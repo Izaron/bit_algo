@@ -18,8 +18,8 @@
 #include "../include/bits.hpp"
 
 //const int test_count = 100000;  // 10^5
-const int test_count = 1000000;  // 10^6
-//const int test_count = 10000000;  // 10^7
+//const int test_count = 1000000;  // 10^6
+const int test_count = 10000000;  // 10^7
 
 // Naive implementations of common bit algorithms
 namespace naive_impl {
@@ -155,8 +155,8 @@ void run_diff(int (*naive)(T), int (*fast)(T),
     std::cout << "Fast solution runned  \t" << t2_seconds 
         << " seconds" << std::endl;
 
-    std::cout << "\t\t\t" << (t2_seconds / t1_seconds * 100.0)
-        << "\% from previous" << std::endl;
+    std::cout << "\t\t\tThe fast solution relative speed: " << (t2_seconds / t1_seconds * 100.0)
+        << "\%" << std::endl;
 }
 
 // Asserts equality of both naive (which is correct by default)

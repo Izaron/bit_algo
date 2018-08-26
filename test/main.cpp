@@ -9,6 +9,9 @@
 #include "../include/bits.hpp"
 
 int main() {
-    std::cout << bit_algo::bit_count(228) << std::endl;
+    long kek = 228;
+    int shrek = 1337;
+    std::cout << bit_algo::bit_count(kek) << std::endl;
+    std::cout << bit_algo::bit_count(shrek) << std::endl;
     return 0;
 }

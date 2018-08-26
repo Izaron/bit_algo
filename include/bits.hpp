@@ -258,7 +258,74 @@ BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if_c<
 
 #if defined(BIT_ALGORITHM_MSVC)
 
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long value)
+{
+    unsigned long index;
+    if (_BitScanForward(&index, value))
+        return index + 1;
+    else
+        return 0;
+}
 
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(long value)
+{
+    return first_set(static_cast<unsigned long>(value));
+}
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned int value)
+{
+    return first_set(static_cast<unsigned long>(value));
+}
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(int value)
+{
+    return first_set(static_cast<unsigned int>(value));
+}
+
+#if defined(BIT_ALGORITHM_MSVC_64)
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned __int64 value)
+{
+    unsigned long index;
+    if (_BitScanForward64(&index, value))
+        return index + 1;
+    else
+        return 0;
+}
+
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(__int64 value)
+{
+    return first_set(static_cast<unsigned __int64>(value));
+}
+
+#else // !defined(BIT_ALGORITHM_MSVC_64)
+
+// Win32 doesn't have _BitScanForward64, emulate it with two 32 bit calls
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long long value)
+{
+    if (value == 0)
+        return 0;
+    int first_half = first_set(static_cast<unsigned int>(value)); // cuts last 32 bits
+    if (!first_half)
+        return 32 + first_set(static_cast<unsigned int>(value >> 32));
+    return first_half;
+}
+
+// Casting signed args to unsigned
+template<>
+BIT_ALGORITHM_FUNC_SPEC int first_set(long long value)
+{
+    return static_cast<unsigned long long>(first_set(value));
+}
+
+#endif // BIT_ALGORITHM_MSVC_64
 
 #elif defined(BIT_ALGORITHM_GCC)
 

@@ -37,19 +37,16 @@ namespace bit_algo {
 
 namespace impl {
 
+typedef unsigned char byte_type;
+const unsigned int table_width = 8;
+
 // ------- bit_count function implementation --------------
 
-typedef unsigned char byte_type;
-
-// The table: wrapped in a class template, so
-// that it is only instantiated if/when needed
 template <bool dummy_name = true>
 struct count_table { static const byte_type table[]; };
 
 template <>
 struct count_table<false> { /* no table */ };
-
-const unsigned int table_width = 8;
 
 template <bool b>
 const byte_type count_table<b>::table[] =
@@ -63,6 +60,29 @@ const byte_type count_table<b>::table[] =
     2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
     2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
     3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
+};
+
+
+// ------- first_set function implementation --------------
+
+template <bool dummy_name = true>
+struct first_set_table { static const byte_type table[]; };
+
+template <>
+struct first_set_table<false> { /* no table */ };
+
+template <bool b>
+const byte_type first_set_table<b>::table[] =
+{
+    // Automatically generated first_set values for [0; 255]
+    0, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1,
+    6, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1,
+    7, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1,
+    6, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1,
+    8, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1,
+    6, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1,
+    7, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1,
+    6, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1, 5, 1, 2, 1, 3, 1, 2, 1, 4, 1, 2, 1, 3, 1, 2, 1
 };
 
 }
@@ -221,13 +241,19 @@ BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if_c<
 {
     if (value == 0)
         return 0;
-    int pos = 1;
-    while (!(value & 1))
+
+    int add = 0, res = 0;
+    while (true)
     {
-        pos++;
-        value >>= 1;
+        res = impl::first_set_table<true>
+            ::table[value & ((1u << impl::table_width) - 1)];
+        if (res)
+            break;
+        value >>= impl::table_width;
+        add += impl::table_width;
     }
-    return pos;
+
+    return add + res;
 }
 
 #if defined(BIT_ALGORITHM_MSVC)

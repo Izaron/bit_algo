@@ -87,7 +87,8 @@ void run_diff(int (*naive)(T), int (*fast)(T),
     duration<double> time_span = duration_cast<
         duration<double>
     >(t2 - t1);
-    std::cout << "Naive solution runned " << time_span.count()
+    double t1_seconds = time_span.count();
+    std::cout << "Naive solution runned \t" << t1_seconds
         << " seconds" << std::endl;
 
     t1 = high_resolution_clock::now();
@@ -95,8 +96,12 @@ void run_diff(int (*naive)(T), int (*fast)(T),
     t2 = high_resolution_clock::now();
 
     time_span = duration_cast< duration<double> >(t2 - t1);
-    std::cout << "Fast solution runned  " << time_span.count()
+    double t2_seconds = time_span.count();
+    std::cout << "Fast solution runned  \t" << t2_seconds 
         << " seconds" << std::endl;
+
+    std::cout << "\t\t\t" << (t1_seconds / t2_seconds * 100.0)
+        << "\% faster" << std::endl;
 }
 
 // Asserts equality of both naive (which is correct by default)

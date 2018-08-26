@@ -257,6 +257,9 @@ BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if_c<
 }
 
 #if defined(BIT_ALGORITHM_MSVC)
+
+
+
 #elif defined(BIT_ALGORITHM_GCC)
 
 template<>

@@ -17,14 +17,15 @@
 
 #include "../include/bits.hpp"
 
-const int test_count = 100000;  // 10^5
+//const int test_count = 100000;  // 10^5
+const int test_count = 1000000;  // 10^6
 //const int test_count = 10000000;  // 10^7
 
 // Naive implementations of common bit algorithms
 namespace naive_impl {
 
 template <typename T>
-int bit_count(T value)
+BIT_ALGORITHM_FUNC_SPEC int bit_count(T value)
 {
     int res = 0;
     while (value)
@@ -36,7 +37,7 @@ int bit_count(T value)
 }
 
 template <typename T>
-bool parity(T value)
+BIT_ALGORITHM_FUNC_SPEC bool parity(T value)
 {
     int res = 0;
     while (value)
@@ -48,7 +49,7 @@ bool parity(T value)
 }
 
 template <typename T>
-int first_set(T value)
+BIT_ALGORITHM_FUNC_SPEC int first_set(T value)
 {
     if (value == 0)
         return 0;
@@ -61,7 +62,35 @@ int first_set(T value)
     return pos;
 }
 
+template <typename T>
+BIT_ALGORITHM_FUNC_SPEC int last_set(T value)
+{
+    if (value == 0)
+        return 0;
+    int pos = 1;
+    while (value)
+    {
+        pos++;
+        value >>= 1;
+    }
+    return pos;
 }
+
+template <typename T>
+BIT_ALGORITHM_FUNC_SPEC int trailing_zeros(T value)
+{
+    if (value == 0)
+        return sizeof(T) * CHAR_BIT;
+    return first_set(value) - 1;
+}
+
+template <typename T>
+BIT_ALGORITHM_FUNC_SPEC int leading_zeros(T value)
+{
+    return sizeof(T) * CHAR_BIT - last_set(value);
+}
+
+} // naive_impl
 
 // Generates test values of the type T,
 // accepts only integral unsigned values
@@ -169,8 +198,8 @@ void benchmark()
 {
     std::vector<T> vector = gen_values<T>();
 
-    //work_with_functions("bit_count", naive_impl::bit_count<T>,
-    //    bit_algo::bit_count<T>, vector);
+    work_with_functions("bit_count", naive_impl::bit_count<T>,
+        bit_algo::bit_count<T>, vector);
     //work_with_functions("parity", naive_impl::parity<T>,
     //    bit_algo::parity<T>, vector);
     work_with_functions("first_set", naive_impl::first_set<T>,

@@ -33,6 +33,38 @@
 
 namespace bit_algo {
 
+namespace impl {
+
+// ------- bit_count function implementation --------------
+
+typedef unsigned char byte_type;
+
+// The table: wrapped in a class template, so
+// that it is only instantiated if/when needed
+template <bool dummy_name = true>
+struct count_table { static const byte_type table[]; };
+
+template <>
+struct count_table<false> { /* no table */ };
+
+const unsigned int table_width = 8;
+
+template <bool b>
+const byte_type count_table<b>::table[] =
+{
+    // Automatically generated bit_count values for [0; 255]
+    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
+};
+
+}
+
 /// \fn bit_count ( IntType value )
 /// \return Number of bits set to 1 in value of an integral type
 ///
@@ -48,8 +80,9 @@ BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if<
     int res = 0;
     while (value)
     {
-        res += value & 1;
-        value >>= 1;
+        res += impl::count_table<true>
+            ::table[value & ((1u << impl::table_width) - 1)];
+        value >>= impl::table_width;
     }
     return res;
 }

@@ -150,7 +150,7 @@ void run_diff(int (*naive)(T), int (*fast)(T),
         duration<double>
     >(t2 - t1);
     double t1_seconds = time_span.count();
-    std::cout << "Naive solution runned \t" << t1_seconds
+    std::cout << "Naive solution ran \t" << t1_seconds
         << " seconds" << std::endl;
 
     t1 = high_resolution_clock::now();
@@ -159,7 +159,7 @@ void run_diff(int (*naive)(T), int (*fast)(T),
 
     time_span = duration_cast< duration<double> >(t2 - t1);
     double t2_seconds = time_span.count();
-    std::cout << "Fast solution runned  \t" << t2_seconds 
+    std::cout << "Fast solution ran  \t" << t2_seconds 
         << " seconds" << std::endl;
 
     std::cout << "\t\t\tThe fast solution relative speed: " << (t2_seconds / t1_seconds * 100.0)

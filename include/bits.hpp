@@ -31,6 +31,10 @@
 // Although 'constexpr' implies 'inline', we still define forced inlining
 #define BIT_ALGORITHM_FUNC_SPEC BOOST_CXX14_CONSTEXPR BOOST_FORCEINLINE
 
+#ifdef BIT_ALGORITHM_MSVC
+#include <intrin.h>
+#endif
+
 namespace bit_algo {
 
 namespace impl {

@@ -103,15 +103,22 @@ typename boost::enable_if_c<
     std::vector<T> res;
     res.reserve(test_count);
 
-    // Using a true random number generator
-    boost::random_device device;
-    boost::random::uniform_int_distribution<T> random(
-        0, std::numeric_limits<T>::max()
-    );
+    T max_value = std::numeric_limits<T>::max();
+    if (max_value <= test_count - 1) {
+        for (T i = 0; res.size() < test_count; ++i) {
+            res.push_back(i);
+        }
+    } else {
+        // Using a true random number generator
+        boost::random_device device;
+        boost::random::uniform_int_distribution<T> random(
+            0, std::numeric_limits<T>::max()
+        );
 
-    // Generate values
-    for (int i = 0; i < test_count; ++i) {
-        res.push_back(random(device));
+        // Generate values
+        for (int i = 0; i < test_count; ++i) {
+            res.push_back(random(device));
+        }
     }
     return res;
 }

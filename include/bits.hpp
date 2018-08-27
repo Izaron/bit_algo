@@ -11,8 +11,6 @@
 #ifndef BIT_ALGORITHM_HPP
 #define BIT_ALGORITHM_HPP
 
-#include <iostream>
-
 #include <boost/detail/workaround.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/utility/enable_if.hpp>

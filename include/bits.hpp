@@ -31,7 +31,7 @@
 // Define specifiers for all functions
 // Firstly, it defines a function 'constexpr' if possible
 // Although 'constexpr' implies 'inline', we still define forced inlining
-#define BIT_ALGORITHM_FUNC_SPEC BOOST_CONSTEXPR BOOST_FORCEINLINE
+#define BIT_ALGORITHM_FUNC_SPEC BOOST_CXX14_CONSTEXPR BOOST_FORCEINLINE
 
 namespace bit_algo {
 

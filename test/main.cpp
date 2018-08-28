@@ -4,12 +4,15 @@
   Distributed under the license described in the LICENSE file
 */
 
-#include <cassert>
+// A hack allows to use asserts in Release mode
+#undef NDEBUG
+
 #include <iostream>
 #include <limits>
 #include <string>
 #include <vector>
 
+#include <boost/assert.hpp>
 #include <boost/chrono.hpp>
 #include <boost/container/static_vector.hpp>
 #include <boost/random/random_device.hpp>
@@ -177,7 +180,7 @@ void check_equality(int (*naive)(T), int (*fast)(T),
     {
         int naive_outcome = naive(vector[i]);
         int fast_outcome = fast(vector[i]);
-        assert(naive_outcome == fast_outcome);
+        BOOST_ASSERT(naive_outcome == fast_outcome);
     }
 }
 
@@ -222,5 +225,5 @@ int main()
     benchmark<unsigned long>();
     benchmark<unsigned long long>();
 
-    assert(false);
+    BOOST_ASSERT(false);
 }

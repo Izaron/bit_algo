@@ -220,6 +220,4 @@ int main()
     benchmark<unsigned int>();
     benchmark<unsigned long>();
     benchmark<unsigned long long>();
-
-    BOOST_ASSERT(false == true);
 }

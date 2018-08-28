@@ -11,9 +11,9 @@ compiler:
     - clang
 
 env:
-    - BUILD_CONFIGURATION=Release CXXSTD=03
-    - BUILD_CONFIGURATION=Release CXXSTD=11
-    - BUILD_CONFIGURATION=Release CXXSTD=14
+    - BUILD_CONFIGURATION=Release YEAR=03
+    - BUILD_CONFIGURATION=Release YEAR=11
+    - BUILD_CONFIGURATION=Release YEAR=14
 
 matrix:
     exclude:
@@ -36,7 +36,7 @@ branches:
 script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DYEAR=$YEAR
     - make
     - ./bit_algo
 

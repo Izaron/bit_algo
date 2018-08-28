@@ -1,0 +1,26 @@
+dist: trusty
+sudo: false
+language: cpp
+
+env:
+  global:
+    - B2_VARIANT=variant=release,debug
+
+os:
+    - linux
+    - osx
+
+compiler:
+    - gcc
+    - clang
+
+install:
+    - source ci/travis/install-$TRAVIS_OS_NAME.sh
+
+branches:
+  only:
+    - master
+
+script:
+    - cd test
+    - ci/travis/build.sh

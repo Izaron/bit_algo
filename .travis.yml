@@ -2,10 +2,6 @@ dist: trusty
 sudo: false
 language: cpp
 
-env:
-  global:
-    - B2_VARIANT=variant=release,debug
-
 os:
     - linux
     - osx
@@ -31,10 +27,16 @@ matrix:
         - os:  osx
           env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
 
+install:
+    - sudo apt-get install libboost-all-dev
+
 branches:
   only:
     - master
 
 script:
     - cd test
-    - ci/travis/build.sh
+    - mkdir build
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
+    - make

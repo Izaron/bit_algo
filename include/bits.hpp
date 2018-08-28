@@ -31,7 +31,7 @@
 // Although 'constexpr' implies 'inline', we still define forced inlining
 #define BIT_ALGORITHM_FUNC_SPEC BOOST_CXX14_CONSTEXPR BOOST_FORCEINLINE
 // If a function contains exactly one 'return', it can use C++11 constexpr
-#define BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN BOOST_CONSTEXPR BOOST_FORCEINLINE
+#define BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN BIT_ALGORITHM_FUNC_SPEC 
 
 #ifdef BIT_ALGORITHM_MSVC
 #include <intrin.h>

@@ -221,4 +221,6 @@ int main()
     benchmark<unsigned int>();
     benchmark<unsigned long>();
     benchmark<unsigned long long>();
+
+    assert(false);
 }

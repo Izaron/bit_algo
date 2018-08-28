@@ -28,8 +28,12 @@ matrix:
           env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
 
 install:
-    - sudo apt-get install libboost-all-dev
-    - sudo apt-get install libboost-all-dev
+    - sudo wget -O boost_1_68_0.tar.gz http://sourceforge.net/projects/boost/files/boost/1.68.0/boost_1_68_0.tar.gz/download
+    - sudo tar xzvf boost_1_68_0.tar.gz
+    - cd boost_1_68_0/
+    - sudo ./bootstrap.sh --prefix=/usr/local -with-libraries=random,system,chrono
+    - sudo ./b2 link=shared threading=multi variant=release
+    - sudo ./b2 install 
 
 branches:
   only:

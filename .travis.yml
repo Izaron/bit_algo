@@ -40,10 +40,10 @@ branches:
     - master
 
 script:
-    - sudo -E mkdir build
+    - mkdir build
     - cd build
-    - sudo -E cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
-    - sudo -E make
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
+    - make
 
 notifications:
     email:

@@ -1,5 +1,4 @@
-# Boost 1.68 requires CMake 3.12 or newer
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.9.2)
 project(bit_algo)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")

@@ -4,6 +4,7 @@
   Distributed under the license described in the LICENSE file
 */
 
+#include <cassert>
 #include <iostream>
 #include <limits>
 #include <string>
@@ -176,7 +177,7 @@ void check_equality(int (*naive)(T), int (*fast)(T),
     {
         int naive_outcome = naive(vector[i]);
         int fast_outcome = fast(vector[i]);
-        BOOST_ASSERT(naive_outcome == fast_outcome);
+        assert(naive_outcome == fast_outcome);
     }
 }
 

@@ -11,14 +11,9 @@ compiler:
     - clang
 
 env:
-    - TARGET_CPU=amd64 BUILD_CONFIGURATION=Release CXXSTD=03
-    - TARGET_CPU=x86 BUILD_CONFIGURATION=Release CXXSTD=03
-
-    - TARGET_CPU=amd64 BUILD_CONFIGURATION=Release CXXSTD=11
-    - TARGET_CPU=x86 BUILD_CONFIGURATION=Release CXXSTD=11
-
-    - TARGET_CPU=amd64 BUILD_CONFIGURATION=Release CXXSTD=14
-    - TARGET_CPU=x86 BUILD_CONFIGURATION=Release CXXSTD=14
+    - BUILD_CONFIGURATION=Release CXXSTD=03
+    - BUILD_CONFIGURATION=Release CXXSTD=11
+    - BUILD_CONFIGURATION=Release CXXSTD=14
 
 matrix:
     exclude:
@@ -41,7 +36,7 @@ branches:
 script:
     - mkdir build
     - cd build
-    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION
     - make
     - ./bit_algo
 

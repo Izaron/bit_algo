@@ -219,6 +219,14 @@ void benchmark()
 
 int main()
 {
+#ifdef BOOST_NO_CXX11_CONSTEXPR
+    std::cout << "NO C++11!" << std::endl;
+#endif
+
+#ifdef BOOST_NO_CXX14_CONSTEXPR
+    std::cout << "NO C++14!" << std::endl;
+#endif
+
     benchmark<unsigned char>();
     benchmark<unsigned short>();
     benchmark<unsigned int>();

@@ -33,7 +33,7 @@ install:
     - cd boost_1_68_0/
     - sudo ./bootstrap.sh --prefix=/usr/local -with-libraries=random,system,chrono >/dev/null 2>&1
     - sudo ./b2 link=shared threading=multi variant=release >/dev/null 2>&1
-    - sudo ./b2 install 
+    - sudo ./b2 install >/dev/null 2>&1
 
 branches:
   only:

@@ -27,16 +27,17 @@
 #endif
 
 // Define specifiers for all functions
-// Firstly, it defines a function 'constexpr' if possible
+// It defines a function 'constexpr' if possible
 // Although 'constexpr' implies 'inline', we still define forced inlining
 #define BIT_ALGORITHM_FUNC_SPEC BOOST_CXX14_CONSTEXPR BOOST_FORCEINLINE
+// If a function contains exactly one 'return', it can use C++11 constexpr
+#define BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN BOOST_CONSTEXPR BOOST_FORCEINLINE
 
 #ifdef BIT_ALGORITHM_MSVC
 #include <intrin.h>
 #endif
 
 namespace bit_algo {
-
 namespace impl {
 
 typedef unsigned char byte_type;
@@ -114,13 +115,13 @@ BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if<
 
 // Using __popcnt variations
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned short value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(unsigned short value)
 {
     return static_cast<int>(__popcnt16(value));
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned int value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(unsigned int value)
 {
     return static_cast<int>(__popcnt(value));
 }
@@ -128,14 +129,14 @@ BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned int value)
 #if defined(BIT_ALGORITHM_MSVC_64)
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned __int64 value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(unsigned __int64 value)
 {
     return static_cast<int>(__popcnt64(value));
 }
 
 // Casting signed args to unsigned
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(__int64 value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(__int64 value)
 {
     return static_cast<unsigned __int64>(bit_count(value));
 }
@@ -144,7 +145,7 @@ BIT_ALGORITHM_FUNC_SPEC int bit_count(__int64 value)
 
 // Win32 doesn't have __popcnt64, emulate it with two 32 bit calls
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned long long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(unsigned long long value)
 {
     return bit_count(static_cast<unsigned int>(value >> 32)) +
         bit_count(static_cast<unsigned int>(value)); // cuts out leading 32 bits
@@ -152,7 +153,7 @@ BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned long long value)
 
 // Casting signed args to unsigned
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(long long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(long long value)
 {
     return static_cast<unsigned long long>(bit_count(value));
 }
@@ -161,7 +162,7 @@ BIT_ALGORITHM_FUNC_SPEC int bit_count(long long value)
 
 // Casting signed args to unsigned
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(short value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(short value)
 {
     return bit_count(static_cast<unsigned short>(value));
 }
@@ -176,38 +177,38 @@ decltype(bit_count<int>) bit_count(int value)
 
 // Using __builtin_popcount variations
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned int value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(unsigned int value)
 {
     return __builtin_popcount(value);
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(unsigned long value)
 {
     return __builtin_popcountl(value);
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(unsigned long long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(unsigned long long value)
 {
     return __builtin_popcountll(value);
 }
 
 // Casting signed args to unsigned
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(int value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(int value)
 {
     return bit_count(static_cast<unsigned int>(value));
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(long value)
 {
     return bit_count(static_cast<unsigned long>(value));
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int bit_count(long long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(long long value)
 {
     return bit_count(static_cast<unsigned long long>(value));
 }
@@ -223,7 +224,7 @@ BIT_ALGORITHM_FUNC_SPEC int bit_count(long long value)
 ///
 /// \note This function works regardless of the value sign.
 template <typename T>
-BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if<
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN typename boost::enable_if<
     boost::is_integral<T>, bool
 >::type parity(T value)
 {
@@ -261,7 +262,7 @@ BIT_ALGORITHM_FUNC_SPEC typename boost::enable_if_c<
 #if defined(BIT_ALGORITHM_MSVC)
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(unsigned long value)
 {
     unsigned long index;
     if (_BitScanForward(&index, value))
@@ -271,19 +272,19 @@ BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long value)
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(long value)
 {
     return first_set(static_cast<unsigned long>(value));
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned int value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(unsigned int value)
 {
     return first_set(static_cast<unsigned long>(value));
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(int value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(int value)
 {
     return first_set(static_cast<unsigned int>(value));
 }
@@ -291,7 +292,7 @@ BIT_ALGORITHM_FUNC_SPEC int first_set(int value)
 #if defined(BIT_ALGORITHM_MSVC_64)
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned __int64 value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(unsigned __int64 value)
 {
     unsigned long index;
     if (_BitScanForward64(&index, value))
@@ -301,7 +302,7 @@ BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned __int64 value)
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(__int64 value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(__int64 value)
 {
     return first_set(static_cast<unsigned __int64>(value));
 }
@@ -310,7 +311,7 @@ BIT_ALGORITHM_FUNC_SPEC int first_set(__int64 value)
 
 // Win32 doesn't have _BitScanForward64, emulate it with two 32 bit calls
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(unsigned long long value)
 {
     if (value == 0)
         return 0;
@@ -322,7 +323,7 @@ BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long long value)
 
 // Casting signed args to unsigned
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(long long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(long long value)
 {
     return static_cast<unsigned long long>(first_set(value));
 }
@@ -332,37 +333,37 @@ BIT_ALGORITHM_FUNC_SPEC int first_set(long long value)
 #elif defined(BIT_ALGORITHM_GCC)
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(int value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(int value)
 {
     return __builtin_ffs(value);
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(long value)
 {
     return __builtin_ffsl(value);
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(long long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(long long value)
 {
     return __builtin_ffsll(value);
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned int value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(unsigned int value)
 {
     return first_set(static_cast<int>(value));
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(unsigned long value)
 {
     return first_set(static_cast<long>(value));
 }
 
 template<>
-BIT_ALGORITHM_FUNC_SPEC int first_set(unsigned long long value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int first_set(unsigned long long value)
 {
     return first_set(static_cast<long long>(value));
 }

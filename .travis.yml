@@ -29,13 +29,13 @@ matrix:
 
 install:
     - sudo apt-get install libboost-all-dev
+    - sudo apt-get install libboost-all-dev
 
 branches:
   only:
     - master
 
 script:
-    - cd test
     - mkdir build
     - cd build
     - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU

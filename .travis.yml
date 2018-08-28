@@ -18,14 +18,8 @@ env:
 
 matrix:
     exclude:
-        - os:       osx
+        - os: osx
           compiler: gcc
-
-        - os:  osx
-          env: TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
-
-        - os:  osx
-          env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
 
 install:
     - sudo wget -O boost_1_68_0.tar.gz http://sourceforge.net/projects/boost/files/boost/1.68.0/boost_1_68_0.tar.gz/download >/dev/null 2>&1
@@ -34,13 +28,16 @@ install:
     - sudo ./bootstrap.sh --prefix=/usr/local -with-libraries=random,system,chrono >/dev/null 2>&1
     - sudo ./b2 link=shared threading=multi variant=release >/dev/null 2>&1
     - sudo ./b2 install >/dev/null 2>&1
+    - cd ..
 
 branches:
   only:
     - master
 
 script:
-    - cmake . -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
+    - mkdir build
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
     - make
 
 notifications:

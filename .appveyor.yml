@@ -25,6 +25,6 @@ environment:
 build_script:
     - mkdir build
     - cd build
-    - cmake .. -DYEAR=11
+    - cmake .. -DBOOST_ROOT=C:\Libraries\boost_1_67_0 -DYEAR=11
     - make
     - start bit_algo.exe

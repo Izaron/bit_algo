@@ -17,4 +17,4 @@ target_link_libraries(bit_algo ${Boost_LIBRARIES})
 
 ### TESTING
 enable_testing()
-add_test(main_test bit_algo)
+add_test (NAME MyTest COMMAND bit_algo)

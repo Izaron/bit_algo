@@ -7,7 +7,7 @@ clone_folder: c:\projects\bits
 shallow_clone: true
 
 matrix:
-    fast_finish: true
+    fast_finish: false
 
 platform:
     - x64

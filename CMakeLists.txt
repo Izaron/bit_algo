@@ -14,3 +14,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_executable(bit_algo ${SOURCE_FILES})
 
 target_link_libraries(bit_algo ${Boost_LIBRARIES})
+
+### TESTING
+enable_testing()
+add_test(main_test bit_algo)

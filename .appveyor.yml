@@ -30,7 +30,7 @@ environment:
 before_build:
     - cmake -G "Visual Studio 15 2017 Win64" .
 
-build:
+build_script:
     # - cmake . -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11
     - cmake -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11 --build .
     - ctest -C Release -V

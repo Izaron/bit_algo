@@ -227,6 +227,14 @@ int main()
     std::cout << "NO C++14!" << std::endl;
 #endif
 
+#ifdef BIT_ALGORITHM_MSVC
+    std::cout << "IT'S MSVS!" << std::endl;
+#endif
+
+#ifdef BIT_ALGORITHM_MSVC_64
+    std::cout << "IT'S MSVS 64-bit!" << std::endl;
+#endif
+
     benchmark<unsigned char>();
     benchmark<unsigned short>();
     benchmark<unsigned int>();

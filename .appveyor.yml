@@ -10,6 +10,11 @@ build:
 configuration:
   - Debug
 
+environment:
+    BOOST_ROOT: "C:\\Libraries\\boost_1_67_0"
+    BOOST_LIBRARYDIR: "C:\\Libraries\\boost_1_67_0\\lib64-msvc-14.0"
+    PATH: "%BOOST_LIBRARYDIR%;%PATH%"
+
 install:
   ############################################################################
   # All external dependencies are installed in C:\projects\deps

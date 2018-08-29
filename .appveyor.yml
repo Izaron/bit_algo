@@ -1,35 +1,39 @@
-image: Visual Studio 2015
-
-init:
-    - git config --global core.autocrlf input
-
-clone_folder: c:\projects\bits
 shallow_clone: true
 
-matrix:
-    fast_finish: false
+os:
+  - Visual Studio 2015
 
-platform:
-    - x64
-    - x86
+build:
+  verbosity: detailed
 
 configuration:
-    - Release
+  - Debug
 
-environment:
-    CONFIG: Release
-    BOOST_ROOT: "C:\\Libraries\\boost_1_67_0"
-    BOOST_LIBRARYDIR: "C:\\Libraries\\boost_1_67_0\\lib64-msvc-14.0"
-    PATH: "%BOOST_LIBRARYDIR%;%PATH%"
+install:
+  ############################################################################
+  # All external dependencies are installed in C:\projects\deps
+  ############################################################################
+  - mkdir C:\projects\deps
+  - cd C:\projects\deps
 
-    matrix:
-        - TOOLCHAIN: msvc10
-        - TOOLCHAIN: msvc12
-        - TOOLCHAIN: msvc14
+  ############################################################################
+  # Install a recent CMake
+  ############################################################################
+  - set CMAKE_URL="https://cmake.org/files/v3.12/cmake-3.12.0-win64-x64.zip"
+  - appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
+  - 7z x cmake.zip -oC:\projects\deps > nul
+  - move C:\projects\deps\cmake-* C:\projects\deps\cmake # Move to a version-agnostic directory
+  - set PATH=C:\projects\deps\cmake\bin;%PATH%
+  - cmake --version
+
+
+before_build:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+  - cd C:\projects\bit_algo
+
 
 build_script:
-    - cmake . -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11
-    # - cmake -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11 --build .
-    - dir /s /b /o:gn
-    - msbuild bit_algo.sln /p:Configuration=$(BuildConfiguration) /p:Platform="$(BuildPlatform)"
-    - ctest -C Release -V
+  - mkdir build
+  - cd build
+  - cmake .. -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11
+  - cmake -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11 --build . --target check

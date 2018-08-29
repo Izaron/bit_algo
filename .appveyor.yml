@@ -27,12 +27,9 @@ environment:
         - TOOLCHAIN: msvc12
         - TOOLCHAIN: msvc14
 
-install:
-    - call ci\appveyor\set-env.bat %TOOLCHAIN% %PLATFORM%
-
 build_script:
     - cmake . -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11
     # - cmake -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11 --build .
     - dir /s /b /o:gn
-    - msbuild bit_algo.sln
+    - msbuild bit_algo.sln /p:Configuration=Debug /p:Platform="x64"
     - ctest -C Release -V

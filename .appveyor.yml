@@ -22,9 +22,6 @@ environment:
         - TOOLCHAIN: msvc12
         - TOOLCHAIN: msvc15
 
-install:
-    - call ci\appveyor\set-env.bat %TOOLCHAIN% %PLATFORM%
-
 build_script:
     - mkdir build
     - cd build

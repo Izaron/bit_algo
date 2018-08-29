@@ -13,6 +13,12 @@ platform:
     - x64
     - x86
 
+environment:
+    CONFIG: Release
+    BOOST_ROOT: "C:\\Libraries\\boost_1_67_0"
+    BOOST_LIBRARYDIR: "C:\\Libraries\\boost_1_67_0\\lib64-msvc-14.0"
+    PATH: "%BOOST_LIBRARYDIR%;%PATH%"
+
 configuration:
     - Release
 
@@ -20,11 +26,12 @@ environment:
     matrix:
         - TOOLCHAIN: msvc10
         - TOOLCHAIN: msvc12
-        - TOOLCHAIN: msvc15
+        - TOOLCHAIN: msvc14
 
 build_script:
+    - echo "%PATH%"
     - mkdir build
     - cd build
-    - cmake .. -DBOOST_ROOT=C:\Libraries\boost_1_67_0 -DYEAR=11
+    - cmake .. -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11
     - cmake --build .
     - start bit_algo.exe

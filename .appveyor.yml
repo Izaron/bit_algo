@@ -31,5 +31,5 @@ build_script:
     - cmake . -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11
     # - cmake -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11 --build .
     - dir /s /b /o:gn
-    - msbuild bit_algo.sln /p:Configuration=Debug /p:Platform="x64"
+    - msbuild bit_algo.sln /p:Configuration=Release /p:Platform=x64
     - ctest -C Release -V

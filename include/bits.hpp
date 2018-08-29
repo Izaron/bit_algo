@@ -168,7 +168,7 @@ BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(short value)
 }
 
 template<>
-decltype(bit_count<int>) bit_count(int value)
+BIT_ALGORITHM_FUNC_SPEC_SINGLE_RETURN int bit_count(int value)
 {
     return bit_count(static_cast<unsigned int>(value));
 }

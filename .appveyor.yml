@@ -27,6 +27,9 @@ environment:
         - TOOLCHAIN: msvc12
         - TOOLCHAIN: msvc14
 
+install:
+    - call ci\appveyor\set-env.bat %TOOLCHAIN% %PLATFORM%
+
 build_script:
     - cmake . -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11
     # - cmake -DCMAKE_BUILD_TYPE="%CONFIG%" -DBOOST_ROOT="%BOOST_ROOT%" -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" -DYEAR=11 --build .
